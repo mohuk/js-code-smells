@@ -1,2 +1,7 @@
-# js-code-smells
-Collection of javascript code smells
+# Javascript Code Smells
+
+## Table of Contents
+### Introduction and how to read it
+### Smells
+### Contribution
+
