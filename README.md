@@ -7,8 +7,7 @@ Bottom line, we need to refactor code with smells to make it more maintainable a
 
 ### Table of Contents
   1. [Purposeless conditions](#purposeless-conditions)
-  2. [Redundant `return` statements](#redundant-returns)
-  3. 
+  2. [Multiple return statements](#redundant-returns)
   
 ## Purposeless conditions
 
@@ -47,6 +46,34 @@ Purposeless conditions introduce unwanted complexity to the code. It also increa
   /* Example #2 */
   function isNotBoolean(test){
     return typeof test !== 'boolean';
+  }
+```
+
+## Multiple return statements
+
+#### Synopsis
+There should generally be a single returning path from a function. Multiple `return` statements make it difficult to understand the flow of the function.
+
+**Avoid**
+```javascript
+  /* Example */
+  function stringAdd(numString){
+    var val = parseInt(numString);
+    if(numString === NaN){
+      return 0;
+    }
+    else{
+      return val;
+    }
+  }
+```
+
+**Score**
+```javascript
+  /* Example */
+  function stringAdd(numString){
+    var val = parseInt(numString);
+    return val === NaN ? 0 : val;
   }
 ```
 ### Contribution
