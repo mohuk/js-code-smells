@@ -8,6 +8,7 @@ Bottom line, we need to refactor code with smells to make it more maintainable a
 ### Table of Contents
   1. [Purposeless conditions](#purposeless-conditions)
   2. [Multiple return statements](#redundant-returns)
+  3. [This or That](#this-or-that)
   
 ## Purposeless conditions
 
@@ -76,6 +77,41 @@ There should generally be a single returning path from a function. Multiple `ret
     return val === NaN ? 0 : val;
   }
 ```
+
+## This or That
+
+#### Synopsis
+Assigning `this` to a variable is a general practive to maintain context in a function. This works but stinks and makes the code less recognizeable. Using constructs `bind`, `call` and `apply` to set context while calling a function is a more cleaner approach. Functions like `forEach` have a hidden parameter to set execution context.
+
+**Avoid**
+```javascript
+  /* Example 1*/
+  function haircut(persons){
+    var that = this;
+    
+    persons.forEach(function(person){
+      that.cut(person);
+    });
+  }
+```
+
+**Score**
+```javascript
+  /* Example 1*/
+  function haircut(persons){
+    persons.forEach(function(person){
+      this.cut(person);
+    }.bind(this));
+  }
+  
+  /* Example 1 Alternate*/
+  function haircut(persons){
+    persons.forEach(function(person){
+      this.cut(person);
+    }, this); //hidden param to set context in `forEach`
+  }
+```
+
 ### Contribution
 Send in your PRs in the following pattern:
 - Let there be a pattern
