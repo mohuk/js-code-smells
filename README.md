@@ -9,6 +9,7 @@ Bottom line, we need to refactor code with smells to make it more maintainable a
   1. [Purposeless conditions](#purposeless-conditions)
   2. [Multiple return statements](#redundant-returns)
   3. [This or That](#this-or-that)
+  4. [Equality](#equality)
   
 ## Purposeless conditions
 
@@ -109,6 +110,27 @@ Assigning `this` to a variable is a general practive to maintain context in a fu
     persons.forEach(function(person){
       this.cut(person);
     }, this); //hidden param to set context in `forEach`
+  }
+```
+
+## Equality
+
+#### Synopsis
+Javascript has two options when it comes to comparing values the double equals `==` and the triple equals `===` operators. The difference between the two is that triple equals does type checking as well as value checking, so `1 === '1'` would be false where as `1 == '1'` would be true. In order to avoid nasty surprises we should try to use the `===` majority of the time since it helps us assert the types as well.
+
+**Avoid**
+```javascript
+  /* Example */
+  function isSomeNumString(numString){
+    return numString == 5;
+  }
+```
+
+**Score**
+```javascript
+  /* Example */
+  function isSomeNumString(numString){
+    return numString === '5';
   }
 ```
 
