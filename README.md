@@ -10,6 +10,7 @@ Bottom line, we need to refactor code with smells to make it more maintainable a
   2. [Multiple return statements](#redundant-returns)
   3. [This or That](#this-or-that)
   4. [Equality](#equality)
+  5. [Broken Promises](#broken-promises)
   
 ## Purposeless conditions
 
@@ -134,6 +135,80 @@ Javascript has two options when it comes to comparing values the double equals `
   }
 ```
 
+## Broken Promises
+
+#### Synopsis
+[Promises A+](https://github.com/promises-aplus/promises-spec) are catching up on every major framework but developers are still stuck in the callback mindset. To make the most from promises they need to be used, or precisely, chained correctly.
+
+**Avoid**
+```javascript
+  /* 
+  * Example 1 - Using Angular JS $http promises
+  * */
+  function getUsers(callback){
+    $http.get('/users')
+      .then(function(res){
+        callback(res);
+      });
+  }
+
+  getUsers(function(res){
+    $scope.users = res.users;  
+  });
+
+  /* 
+  * Example 2 - Using Native NodeJS promises
+  * */
+  function getEmployees(){
+    return new Promise(function(resolve, reject){
+      resolve(doSomething());
+    });
+  }
+
+  function getData(callback){
+    getEmployees()
+      .then(function(res){
+        callback(res);
+      });
+  }
+
+  getData(function(res){
+    console.log(res.employees);
+  });
+```
+
+**Score**
+```javascript
+  /* 
+  * Example 1 - Using Angular JS $http promises
+  * */
+  function getUsers(){
+    return $http.get('/users');
+  }
+
+  getUsers()
+    .then(function(res){
+      $scope.users = res.users;  
+    });
+
+  /* 
+  * Example 2 - Using Native NodeJS promises
+  * */
+  function getEmployees(){
+    return new Promise(function(resolve, reject){
+      resolve(doSomething());
+    });
+  }
+
+  function getData(){
+    return getEmployees();
+  }
+
+  getData()
+    .then(function(res){
+      console.log(res.employees);
+    });    
+```
 ### Contribution
 Send in your PRs in the following pattern:
 - Let there be a pattern
