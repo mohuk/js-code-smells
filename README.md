@@ -75,8 +75,7 @@ There should generally be a single returning path from a function. Multiple `ret
 ```javascript
   /* Example */
   function stringAdd(numString){
-    var val = parseInt(numString);
-    return val === NaN ? 0 : val;
+    return Number(numString) || 0;
   }
 ```
 
